@@ -33,10 +33,13 @@ export function updateOrder() {
 
 export default function reducer(state = 0, action) {
     switch (action.type) {
+
         case GET_ORDER:
             return state;
+
         case NEXT_IN_ORDER:
             return state + 1;
+
         default:
             return state;
     };

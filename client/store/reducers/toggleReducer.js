@@ -33,10 +33,13 @@ export function failEnoughPlayers() {
 
 export default function reducer(state = false, action) {
     switch (action.type) {
+
         case ENOUGH_PLAYERS:
             return true;
+
         case NOT_ENOUGH_PLAYERS:
             return false;
+
         default:
             return state;
     };

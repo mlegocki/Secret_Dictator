@@ -4,11 +4,15 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import players from './reducers/playersReducer';
+import cards from './reducers/cardsReducer';
+import deck from './reducers/deckReducer';
 import order from './reducers/orderReducer';
 import toggle from './reducers/toggleReducer';
 
 const rootReducer = combineReducers({
     players,
+    cards,
+    deck,
     order,
     toggle
 });
@@ -22,5 +26,7 @@ const store = createStore(rootReducer, composeEnhancers(
 export default store;
 
 export * from './reducers/playersReducer';
+export * from './reducers/cardsReducer';
+export * from './reducers/deckReducer';
 export * from './reducers/orderReducer';
 export * from './reducers/toggleReducer';
