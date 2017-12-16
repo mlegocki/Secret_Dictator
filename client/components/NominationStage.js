@@ -6,15 +6,15 @@ import VoteStage from './VoteStage';
 
 
 class NominationStage extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
     }
     componentDidMount() {
-        if (this.props.order === 1) {
-            const newPresident = this.props.players.find(player => player.president === 'Yes');
-        } else {
+        if (this.props.order !== 1) { 
             const currentPresidentIndex = this.props.players.findIndex(player => player.president === 'Yes');
+
             this.props.togglePresident(this.props.players[currentPresidentIndex]);
+
             if (this.props.players[currentPresidentIndex + 1]) {
                 this.props.togglePresident(this.props.players[currentPresidentIndex + 1]);
             } else {
@@ -23,14 +23,14 @@ class NominationStage extends Component {
         }
     }
     render() {
-        const { players, nonPresidentAO, newPresident, history, togglePresident, toggleChancellor } = this.props;
+        const { players, eligibleChancellors, president, history, togglePresident, toggleChancellor } = this.props;
 
         return (
             <div>
-                <h1>{newPresident.name} is the Presidential nominee</h1>
-                <h3>{newPresident.name} nominate a chancellor</h3>
+                <h1>{president.name} is the Presidential nominee</h1>
+                <h3>{president.name} nominate a chancellor</h3>
                 {
-                    nonPresidentAO.map(player => {
+                    eligibleChancellors.map(player => {
                         return (
                             <li key={player.id}>
                                 <button
@@ -51,14 +51,14 @@ class NominationStage extends Component {
 
 const mapStateToProps = function (state, ownProps) {
     const { players, order } = state;
-    const nonPresidentAO = players.filter(player => player.president === 'No');
+    const eligibleChancellors = players.filter(player => player.president === 'No' && player.eligible === 'Yes');
+    const president = players.find(player => player.president === 'Yes');
     const history = ownProps.history;
-    const newPresident = players.find(player => player.president === 'Yes');
     return {
         players,
         order,
-        nonPresidentAO,
-        newPresident,
+        eligibleChancellors,
+        president,
         history
     };
 };

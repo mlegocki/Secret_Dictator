@@ -17,7 +17,7 @@ const Players = db.define('players', {
         type: Sequelize.ENUM("No", "Yes"),
         defaultValue: "No"
     },
-    eligibility: {
+    eligible: {
         type: Sequelize.ENUM("No", "Yes"),
         defaultValue: "Yes"
     }

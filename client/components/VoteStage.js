@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { } from '../store';
+import { putPlayer, nextInOrder } from '../store';
 
 
 function VoteStage(props) {
-    const { players, successful, failure } = props
+    const { players, successful, failure, history } = props
     const president = players.find(player => player.president === "Yes");
     const chancellor = players.find(player => player.chancellor === "Yes");
     return (
@@ -13,30 +13,39 @@ function VoteStage(props) {
             <h1>Government Nominees</h1>
             <h1>President: {president.name}</h1>
             <h1>Chancellor: {chancellor.name}</h1>
-            <button onClick={successful}>Successful Election</button>
-            <button onClick={failure}>Failed Election</button>
-
+            <button onClick={() => successful(chancellor)}>
+                Successful Election
+            </button>
+            <button onClick={() => failure(chancellor)}>
+                Failed Election
+            </button>
         </div>
     )
 }
 
-const mapStateToProps = function (state) {
+const mapStateToProps = function (state, ownProps) {
     const { players } = state;
+    const { history } = ownProps;
     return {
-        players
+        players,
+        history
     };
 };
 
 const mapDispatchToProps = function (dispatch, ownProps) {
     const { history } = ownProps;
     return {
-        successful(evt) {
-            evt.preventDefault();
-            handle.push('/card-draw');
+        successful(player) {
+            player.eligible = 'No';
+            dispatch(putPlayer(player));
+            dispatch(nextInOrder());
+            history.push('/card-draw');
         },
-        failure(evt) {
-            evt.preventDefault();
-            handle.push('/nomination-stage');
+        failure(player) {
+            player.chancellor = 'No';
+            dispatch(putPlayer(player));
+            dispatch(nextInOrder());
+            history.push('/nomination-stage');
         }
     };
 };

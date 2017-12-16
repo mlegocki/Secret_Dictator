@@ -1,12 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Deck from 'deck-of-cards';
 import { } from '../store';
 
 
 function CardDraw(props) {
+    const deck = Deck();
     return (
         <div>
+
         </div>
     )
 }
