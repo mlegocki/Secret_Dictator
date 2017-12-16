@@ -1,15 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { } from '../store';
+import { putPlayer, updateOrder } from '../store';
 
 
 function StartGame(props) {
     const { players, handleClick } = props;
+    const firstPresident = players[Math.round(players.length * Math.random())];
     return (
         <div>
-            Let's Begin...
-            <button onClick={handleClick}></button>
+            <h1>Let's Begin...</h1>
+            <button onClick={() => handleClick(firstPresident)}>Ready to proceed</button>
         </div>
     )
 }
@@ -24,11 +25,13 @@ const mapStateToProps = function (state) {
 const mapDispatchToProps = function (dispatch, ownProps) {
     const { history } = ownProps;
     return {
-        handleClick(evt) {
-            evt.preventDefault();
+        handleClick(player) {
+            player.president = 'Yes';
+            dispatch(putPlayer(player));
+            dispatch(updateOrder());
             history.push('/nomination-stage');
         }
     };
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(StartGame));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StartGame));

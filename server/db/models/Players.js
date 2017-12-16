@@ -8,6 +8,18 @@ const Players = db.define('players', {
         validate: {
             notEmpty: true
         }
+    },
+    president: { 
+        type: Sequelize.ENUM("No", "Yes"),
+        defaultValue: "No"
+    },
+    chancellor: { 
+        type: Sequelize.ENUM("No", "Yes"),
+        defaultValue: "No"
+    },
+    eligibility: {
+        type: Sequelize.ENUM("No", "Yes"),
+        defaultValue: "Yes"
     }
 });
 

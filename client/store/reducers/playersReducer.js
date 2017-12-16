@@ -53,7 +53,9 @@ export function putPlayer(player) {
     return function thunk(dispatch) {
         return axios.put(`/api/players/${player.id}`, player)
             .then(res => res.data)
-            .then(updatedPlayer => dispatch(updatePlayer(updatedPlayer)));
+            .then(updatedPlayer =>
+                dispatch(updatePlayer(updatedPlayer))
+            );
     };
 };
 
@@ -88,8 +90,8 @@ export default function reducer(state = [], action) {
 
         case REMOVE_ALL_PLAYERS:
             return [];
-        
-        default: 
+
+        default:
             return state;
     };
 };

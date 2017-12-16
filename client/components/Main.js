@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import store, { fetchPlayers } from '../store';
+import store, { fetchPlayers, fetchPresident, fetchChancellor, getOrder } from '../store';
 import NewGame from './NewGame';
 import StartGame from './StartGame';
 import NominationStage from './NominationStage';
+import VoteStage from './VoteStage';
+import CardDraw from './CardDraw';
 
 export default class Main extends Component {
     componentDidMount() {
-        const updatePlayersThunk = fetchPlayers();
-        store.dispatch(updatePlayersThunk);
+        store.dispatch(fetchPlayers());
+        store.dispatch(getOrder());
     }
     render() {
         return (
@@ -17,6 +19,8 @@ export default class Main extends Component {
                 <Switch>
                     <Route path="/start-game" component={StartGame} />
                     <Route path="/nomination-stage" component={NominationStage} />
+                    <Route path="/vote-stage" component={VoteStage} />
+                    <Route path="/card-draw" component={CardDraw} />
                     <Route exact path="/" component={NewGame} />
                 </Switch>
             </div>

@@ -1,51 +1,78 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { } from '../store';
+import { putPlayer } from '../store';
 import VoteStage from './VoteStage';
 
 
-function NominationStage(props) {
-    const { players, selectFirstPresident, assignNominee } = props;
-    const president = players[selectFirstPresident(players)];
-    const others = players.filter(player => player.id !== president.id);
-    const nominee;
-    return (
-        <div>
-            <h1>{president.name} is the first Presidentent nominee</h1>
-            <h3>{president.name} nominate a chancellor</h3>
-            {
-                others.map(player => {
-                    return (
-                        <li key={player.id}>
-                            <button onClick={() => }>
-                                {player.name}
-                            </button>
-                        </li>
-                    )
-                })
+class NominationStage extends Component {
+    constructor(props) {
+        super(props);
+    }
+    componentDidMount() {
+        if (this.props.order === 1) {
+            const newPresident = this.props.players.find(player => player.president === 'Yes');
+        } else {
+            const currentPresidentIndex = this.props.players.findIndex(player => player.president === 'Yes');
+            this.props.togglePresident(this.props.players[currentPresidentIndex]);
+            if (this.props.players[currentPresidentIndex + 1]) {
+                this.props.togglePresident(this.props.players[currentPresidentIndex + 1]);
+            } else {
+                this.props.togglePresident(this.props.players[0]);
             }
-        </div>
-    )
+        }
+    }
+    render() {
+        const { players, nonPresidentAO, newPresident, history, togglePresident, toggleChancellor } = this.props;
+
+        return (
+            <div>
+                <h1>{newPresident.name} is the Presidential nominee</h1>
+                <h3>{newPresident.name} nominate a chancellor</h3>
+                {
+                    nonPresidentAO.map(player => {
+                        return (
+                            <li key={player.id}>
+                                <button
+                                    onClick={() => {
+                                        toggleChancellor(player);
+                                        history.push('/vote-stage')
+                                    }}>
+                                    {player.name}
+                                </button>
+                            </li>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
 }
 
-const mapStateToProps = function (state) {
-    const { players } = state;
+const mapStateToProps = function (state, ownProps) {
+    const { players, order } = state;
+    const nonPresidentAO = players.filter(player => player.president === 'No');
+    const history = ownProps.history;
+    const newPresident = players.find(player => player.president === 'Yes');
     return {
-        players
+        players,
+        order,
+        nonPresidentAO,
+        newPresident,
+        history
     };
 };
 
 const mapDispatchToProps = function (dispatch, ownProps) {
-    console.log(ownProps);
     const { history } = ownProps;
     return {
-        selectFirstPresident(players) {
-            return Math.round(players.length * Math.random());
+        togglePresident(player) {
+            player.president === 'No' ? player.president = 'Yes' : player.president = 'No';
+            dispatch(putPlayer(player));
         },
-        assignNominee(player) {
-            return player;
-            history.push('/vote-stage');
+        toggleChancellor(player) {
+            player.chancellor === 'No' ? player.chancellor = 'Yes' : player.chancellor = 'No';
+            dispatch(putPlayer(player));
         }
     };
 };
