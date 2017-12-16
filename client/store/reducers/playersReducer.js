@@ -35,7 +35,6 @@ export function removeAllPlayers() {
 
 export function fetchPlayers() {
     return function thunk(dispatch) {
-        console.log('hello');
         return axios.get('/api/players')
             .then(res => res.data)
             .then(players => dispatch(getPlayers(players)));
@@ -58,11 +57,10 @@ export function putPlayer(player) {
     };
 };
 
-export function deletePlayer(player) {
+export function deletePlayer(deletedPlayer) {
     return function thunk(dispatch) {
-        return axios.delete(`/api/players/${player.id}`)
-            .then(res => res.data)
-            .then(deletedPlayer => dispatch(removePlayer(deletedPlayer)));
+        return axios.delete(`/api/players/${deletedPlayer.id}`)
+            .then(() => dispatch(removePlayer(deletedPlayer)));
     };
 };
 
