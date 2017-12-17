@@ -19,30 +19,26 @@ RANK:
 */
 
 function CardDraw(props) {
-    const { players, deck, randomSelect } = props;
+    const { players, deck, selectedCards, randomSelect } = props;
+
     return (
         <div>
-            {randomSelect(deck.cards)}
         </div>
     )
 }
 
 const mapStateToProps = function (state) {
-    const { players, deck } = state;
+    const { players, deck, selectedCards } = state;
     return {
         players,
-        deck
+        deck,
+        selectedCards
     };
 };
 
 const mapDispatchToProps = function (dispatch, ownProps) {
     const { history } = ownProps;
     return {
-        randomSelect(cards) {
-            const selectedCard = cards[Math.round((cards.length - 1) * Math.random())];
-            dispatch(deleteCard(selectedCard));
-            dispatch(addSelected(selectedCard));
-        }
     };
 };
 

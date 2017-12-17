@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { putPlayer, nextInOrder } from '../store';
+import { putPlayer, nextInOrder, deleteCard, addSelected } from '../store';
 
 
 function VoteStage(props) {
-    const { players, successful, failure, history } = props
+    const { players, deck, history, successful, failure } = props
+    const { cards } = deck;
     const president = players.find(player => player.president);
     const chancellor = players.find(player => player.chancellor);
     return (
@@ -13,7 +14,7 @@ function VoteStage(props) {
             <h1>Government Nominees</h1>
             <h1>President: {president.name}</h1>
             <h1>Chancellor: {chancellor.name}</h1>
-            <button onClick={() => successful(chancellor)}>
+            <button onClick={() => successful(chancellor, cards)}>
                 Successful Election
             </button>
             <button onClick={() => failure(chancellor)}>
@@ -24,10 +25,11 @@ function VoteStage(props) {
 }
 
 const mapStateToProps = function (state, ownProps) {
-    const { players } = state;
+    const { players, deck } = state;
     const { history } = ownProps;
     return {
         players,
+        deck,
         history
     };
 };
@@ -35,10 +37,15 @@ const mapStateToProps = function (state, ownProps) {
 const mapDispatchToProps = function (dispatch, ownProps) {
     const { history } = ownProps;
     return {
-        successful(player) {
+        successful(player, cards) {
             player.eligible = false;
             dispatch(putPlayer(player));
             dispatch(nextInOrder());
+
+            const selectedCard = cards[Math.round((cards.length - 1) * Math.random())];
+            dispatch(deleteCard(selectedCard));
+            dispatch(addSelected(selectedCard));
+
             history.push('/card-draw');
         },
         failure(player) {
