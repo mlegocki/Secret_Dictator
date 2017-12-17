@@ -6,8 +6,8 @@ import { putPlayer, nextInOrder } from '../store';
 
 function VoteStage(props) {
     const { players, successful, failure, history } = props
-    const president = players.find(player => player.president === "Yes");
-    const chancellor = players.find(player => player.chancellor === "Yes");
+    const president = players.find(player => player.president);
+    const chancellor = players.find(player => player.chancellor);
     return (
         <div>
             <h1>Government Nominees</h1>
@@ -36,13 +36,13 @@ const mapDispatchToProps = function (dispatch, ownProps) {
     const { history } = ownProps;
     return {
         successful(player) {
-            player.eligible = 'No';
+            player.eligible = false;
             dispatch(putPlayer(player));
             dispatch(nextInOrder());
             history.push('/card-draw');
         },
         failure(player) {
-            player.chancellor = 'No';
+            player.chancellor = false;
             dispatch(putPlayer(player));
             dispatch(nextInOrder());
             history.push('/nomination-stage');

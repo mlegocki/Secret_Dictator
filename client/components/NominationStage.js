@@ -11,7 +11,7 @@ class NominationStage extends Component {
     }
     componentDidMount() {
         if (this.props.order !== 1) { 
-            const currentPresidentIndex = this.props.players.findIndex(player => player.president === 'Yes');
+            const currentPresidentIndex = this.props.players.findIndex(player => player.president === true);
 
             this.props.togglePresident(this.props.players[currentPresidentIndex]);
 
@@ -51,8 +51,8 @@ class NominationStage extends Component {
 
 const mapStateToProps = function (state, ownProps) {
     const { players, order } = state;
-    const eligibleChancellors = players.filter(player => player.president === 'No' && player.eligible === 'Yes');
-    const president = players.find(player => player.president === 'Yes');
+    const eligibleChancellors = players.filter(player => player.president === false && player.eligible === true);
+    const president = players.find(player => player.president === true);
     const history = ownProps.history;
     return {
         players,
@@ -67,11 +67,11 @@ const mapDispatchToProps = function (dispatch, ownProps) {
     const { history } = ownProps;
     return {
         togglePresident(player) {
-            player.president === 'No' ? player.president = 'Yes' : player.president = 'No';
+            player.president === false ? player.president = true : player.president = false;
             dispatch(putPlayer(player));
         },
         toggleChancellor(player) {
-            player.chancellor === 'No' ? player.chancellor = 'Yes' : player.chancellor = 'No';
+            player.chancellor === false ? player.chancellor = true : player.chancellor = false;
             dispatch(putPlayer(player));
         }
     };

@@ -4,7 +4,6 @@ import Deck from 'deck-of-cards';
 // INITIALIZE DECK OF CARDS
 
 const deck = Deck();
-const cards = deck.cards;
 
 const GET_DECK = 'GET_DECK';
 const REMOVE_CARD = 'REMOVE_CARD';
@@ -16,8 +15,8 @@ export function getDeck() {
     return action;
 };
 
-export function removeCard(card) {
-    const action = { type: REMOVE_CARD, card };
+export function removeCard(cardId) {
+    const action = { type: REMOVE_CARD, cardId };
     return action;
 };
 
@@ -29,18 +28,19 @@ export function fetchDeck() {
 
 export function deleteCard(card) {
     return function thunk(dispatch) {
-        return dispatch(removeCard(card));
+        return dispatch(removeCard(card.i));
     };
 };
 
-export default function reducer(state = cards, action) {
+export default function reducer(state = deck, action) {
     switch (action.type) {
 
         case GET_DECK:
             return state;
 
         case REMOVE_CARD:
-            return state.filter(card => card !== action.card);
+            state.cards = state.cards.filter(card => card.i !== action.cardId);
+            return state;
 
         default:
             return state;

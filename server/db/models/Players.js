@@ -10,16 +10,16 @@ const Players = db.define('players', {
         }
     },
     president: { 
-        type: Sequelize.ENUM("No", "Yes"),
-        defaultValue: "No"
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     },
     chancellor: { 
-        type: Sequelize.ENUM("No", "Yes"),
-        defaultValue: "No"
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     },
     eligible: {
-        type: Sequelize.ENUM("No", "Yes"),
-        defaultValue: "Yes"
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     }
 });
 

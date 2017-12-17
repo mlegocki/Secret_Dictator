@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { deleteCard } from '../store';
+import { deleteCard, addSelected } from '../store';
 /*
 -----LEGEND-----
 
@@ -19,20 +19,19 @@ RANK:
 */
 
 function CardDraw(props) {
-    const { players, cards, randomSelect } = props;
-
+    const { players, deck, randomSelect } = props;
     return (
         <div>
-            {randomSelect(cards)}
+            {randomSelect(deck.cards)}
         </div>
     )
 }
 
 const mapStateToProps = function (state) {
-    const { players, cards } = state;
+    const { players, deck } = state;
     return {
         players,
-        cards
+        deck
     };
 };
 
@@ -40,7 +39,7 @@ const mapDispatchToProps = function (dispatch, ownProps) {
     const { history } = ownProps;
     return {
         randomSelect(cards) {
-            const selectedCard = cards[Math.round(cards.length * Math.random())];
+            const selectedCard = cards[Math.round((cards.length - 1) * Math.random())];
             dispatch(deleteCard(selectedCard));
             dispatch(addSelected(selectedCard));
         }
