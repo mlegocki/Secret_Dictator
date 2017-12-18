@@ -41,8 +41,8 @@ const mapDispatchToProps = function (dispatch, ownProps) {
             player.eligible = false;
             dispatch(putPlayer(player));
             dispatch(nextInOrder());
-
-            const selectedCard = cards[Math.round((cards.length - 1) * Math.random())];
+            
+            const selectedCard = cards[0];
             dispatch(deleteCard(selectedCard));
             dispatch(addSelected(selectedCard));
 

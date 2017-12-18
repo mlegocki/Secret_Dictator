@@ -4,14 +4,16 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import players from './reducers/playersReducer';
-import selectedCards from './reducers/cardsReducer';
+import selectedFascistCards from './reducers/fascistCardsReducer';
+import selectedAllyCards from './reducers/allyCardsReducer';
 import deck from './reducers/deckReducer';
 import order from './reducers/orderReducer';
 import toggle from './reducers/toggleReducer';
 
 const rootReducer = combineReducers({
     players,
-    selectedCards,
+    selectedFascistCards,
+    selectedAllyCards,
     deck,
     order,
     toggle
@@ -26,7 +28,8 @@ const store = createStore(rootReducer, composeEnhancers(
 export default store;
 
 export * from './reducers/playersReducer';
-export * from './reducers/cardsReducer';
+export * from './reducers/fascistCardsReducer';
+export * from './reducers/allyCardsReducer';
 export * from './reducers/deckReducer';
 export * from './reducers/orderReducer';
 export * from './reducers/toggleReducer';

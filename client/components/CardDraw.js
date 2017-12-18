@@ -19,10 +19,18 @@ RANK:
 */
 
 function CardDraw(props) {
-    const { players, deck, selectedCards, randomSelect } = props;
-
+    const { players, deck, selectedCards, randomSelect, drawCard } = props;
     return (
         <div>
+            {
+                selectedCards.map(card => {
+                    return (
+                        <li key={card.i}>
+                            {card.i}
+                        </li>
+                    )
+                })
+            }
         </div>
     )
 }
@@ -36,10 +44,10 @@ const mapStateToProps = function (state) {
     };
 };
 
-const mapDispatchToProps = function (dispatch, ownProps) {
-    const { history } = ownProps;
-    return {
-    };
-};
+// const mapDispatchToProps = function (dispatch, ownProps) {
+//     const { history } = ownProps;
+//     return {
+//     };
+// };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CardDraw));
+export default withRouter(connect(mapStateToProps, null)(CardDraw));

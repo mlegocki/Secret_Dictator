@@ -19,7 +19,7 @@ const seed = () =>
     );
 
 // { force: true }
-db.sync({force:true})
+db.sync({force: true})
     .then(() => {
         console.log('Database synced');
         app.listen(PORT, () => {

@@ -1,31 +1,30 @@
 import axios from 'axios';
-import Deck from 'deck-of-cards';
 
 const GET_CARDS = 'GET_CARDS';
 const ADD_CARD = 'ADD_CARD';
 
 // ACTIONS 
 
-export function getCards() {
+export function getAllyCards() {
     const action = { type: GET_CARDS };
     return action;
 };
 
-export function addCard(card) {
+export function addAllyCard(card) {
     const action = { type: ADD_CARD, card };
     return action;
 };
 
 
-export function fetchCards() {
+export function fetchAllyCards() {
     return function thunk(dispatch) {
-        return dispatch(getCards());
+        return dispatch(getAllyCards());
     };
 };
 
-export function addSelected(card) {
+export function addAllySelected(card) {
     return function thunk(dispatch) {
-        return dispatch(addCard(card));
+        return dispatch(addAllyCard(card));
     };
 };
 

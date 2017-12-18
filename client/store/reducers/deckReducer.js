@@ -4,6 +4,7 @@ import Deck from 'deck-of-cards';
 // INITIALIZE DECK OF CARDS
 
 const deck = Deck();
+deck.shuffle();
 
 const GET_DECK = 'GET_DECK';
 const REMOVE_CARD = 'REMOVE_CARD';
