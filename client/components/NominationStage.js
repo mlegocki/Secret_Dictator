@@ -10,7 +10,7 @@ class NominationStage extends Component {
         super();
     }
     componentDidMount() {
-        if (this.props.order !== 1 && this.props.fascistPickPresident === false && this.props.selectedFascistCards !== 3) {
+        if (this.props.order !== 1 && this.props.fascistPickPresident === false) {
             const currentPresidentIndex = this.props.players.findIndex(player => player.president === true);
 
             this.props.togglePresident(this.props.players[currentPresidentIndex]);
