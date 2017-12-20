@@ -1,17 +1,17 @@
 import axios from 'axios';
 
-const GET_CARDS = 'GET_CARDS';
-const ADD_CARD = 'ADD_CARD';
+const GET_FACIST_CARDS = 'GET_FACIST_CARDS';
+const ADD_FASCIST_CARD = 'ADD_FASCIST_CARD';
 
 // ACTIONS 
 
 export function getFascistCards() {
-    const action = { type: GET_CARDS };
+    const action = { type: GET_FACIST_CARDS };
     return action;
 };
 
 export function addFascistCard(card) {
-    const action = { type: ADD_CARD, card };
+    const action = { type: ADD_FASCIST_CARD, card };
     return action;
 };
 
@@ -31,10 +31,10 @@ export function addFascistSelected(card) {
 export default function reducer(state = [], action) {
     switch (action.type) {
 
-        case GET_CARDS:
+        case GET_FACIST_CARDS:
             return state;
 
-        case ADD_CARD:
+        case ADD_FASCIST_CARD:
             return [...state, action.card]
 
         default:

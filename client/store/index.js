@@ -9,6 +9,7 @@ import selectedAllyCards from './reducers/allyCardsReducer';
 import deck from './reducers/deckReducer';
 import order from './reducers/orderReducer';
 import toggle from './reducers/toggleReducer';
+import fascistPickPresident from './reducers/fascist_special/fascistPickPresidentReducer';
 
 const rootReducer = combineReducers({
     players,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     selectedAllyCards,
     deck,
     order,
-    toggle
+    toggle,
+    fascistPickPresident
 });
 
 const composeEnhancers = composeWithDevTools({});
@@ -33,3 +35,4 @@ export * from './reducers/allyCardsReducer';
 export * from './reducers/deckReducer';
 export * from './reducers/orderReducer';
 export * from './reducers/toggleReducer';
+export * from './reducers/fascist_special/fascistPickPresidentReducer';

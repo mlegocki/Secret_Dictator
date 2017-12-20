@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import store, { fetchPlayers, getOrder, fetchAllyCards, fetchFascistCards, fetchDeck } from '../store';
+import store, { fetchPlayers, getOrder } from '../store';
 import NewGame from './NewGame';
 import StartGame from './StartGame';
 import NominationStage from './NominationStage';
@@ -12,9 +12,6 @@ export default class Main extends Component {
     componentDidMount() {
         store.dispatch(fetchPlayers());
         store.dispatch(getOrder());
-        store.dispatch(fetchAllyCards());
-        store.dispatch(fetchFascistCards());
-        store.dispatch(fetchDeck());
     }
     render() {
         return (

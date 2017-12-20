@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { deleteCard, addSelected } from '../store';
+import { putPlayer, pickedPresident } from '../store';
 /*
 -----LEGEND-----
 
@@ -19,35 +19,99 @@ RANK:
 */
 
 function CardDraw(props) {
-    const { players, deck, selectedCards, randomSelect, drawCard } = props;
+    const {
+        players,
+        deck,
+        selectedFascistCards,
+        selectedAllyCards,
+        fascistPickPresident,
+        returnToVote,
+        fascistSpecialCards
+    } = props;
+    const president = players.find(player => player.president);
     return (
         <div>
-            {
-                selectedCards.map(card => {
-                    return (
-                        <li key={card.i}>
-                            {card.i}
-                        </li>
-                    )
-                })
-            }
+            <div>
+                {
+                    selectedAllyCards.map(card => {
+                        return (
+                            <li key={card.i}>
+                                {card.i}
+                            </li>
+                        )
+                    })
+                }
+            </div>
+            <div>
+                {
+                    selectedFascistCards.map(card => {
+                        return (
+                            <li key={card.i}>
+                                {card.i}
+                            </li>
+                        )
+                    })
+                }
+            </div>
+            {/* SPECIAL FASCIST CARD CASES */}
+            <div>
+                {fascistSpecialCards(selectedFascistCards, players, president, fascistPickPresident)}
+            </div>
+            <button onClick={returnToVote}>
+                Next Vote
+            </button>
         </div>
     )
 }
 
 const mapStateToProps = function (state) {
-    const { players, deck, selectedCards } = state;
+    const { players, deck, selectedAllyCards, selectedFascistCards, fascistPickPresident } = state;
     return {
         players,
         deck,
-        selectedCards
+        selectedAllyCards,
+        selectedFascistCards,
+        fascistPickPresident
     };
 };
 
-// const mapDispatchToProps = function (dispatch, ownProps) {
-//     const { history } = ownProps;
-//     return {
-//     };
-// };
+const mapDispatchToProps = function (dispatch, ownProps) {
+    const { history } = ownProps;
+    return {
+        returnToVote() {
+            history.push('/nomination-stage');
+        },
+        fascistSpecialCards(selectedFascistCards, players, president, fascistPickPresident) {
+            if (!fascistPickPresident && selectedFascistCards.length === 3) {
+                return (
+                    <div>
+                        {
+                            players.map(player => {
+                                if (!player.president) {
+                                    return (
+                                        <li key={player.id}>
+                                            <button onClick={() => {
+                                                player.president = true;
+                                                president.president = false;
+                                                dispatch(pickedPresident());
+                                                history.push('/nomination-stage');
+                                            }}>
+                                                {player.name}
+                                            </button>
+                                        </li>
+                                    );
+                                }
+                            })
+                        }
+                    </div>
+                );
+            }
+            // const currentPresident = players.find(player => player.president);
+            // currentPresident.president = false;
+            // case 4: 
+            // case 5:
+        }
+    };
+};
 
-export default withRouter(connect(mapStateToProps, null)(CardDraw));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CardDraw));

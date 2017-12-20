@@ -10,7 +10,7 @@ class NominationStage extends Component {
         super();
     }
     componentDidMount() {
-        if (this.props.order !== 1) { 
+        if (this.props.order !== 1 && this.props.fascistPickPresident === false && this.props.selectedFascistCards !== 3) {
             const currentPresidentIndex = this.props.players.findIndex(player => player.president === true);
 
             this.props.togglePresident(this.props.players[currentPresidentIndex]);
@@ -23,7 +23,7 @@ class NominationStage extends Component {
         }
     }
     render() {
-        const { players, eligibleChancellors, president, history, togglePresident, toggleChancellor } = this.props;
+        const { players, eligibleChancellors, president, togglePresident, toggleChancellor } = this.props;
 
         return (
             <div>
@@ -36,7 +36,6 @@ class NominationStage extends Component {
                                 <button
                                     onClick={() => {
                                         toggleChancellor(player);
-                                        history.push('/vote-stage')
                                     }}>
                                     {player.name}
                                 </button>
@@ -50,13 +49,15 @@ class NominationStage extends Component {
 }
 
 const mapStateToProps = function (state, ownProps) {
-    const { players, order } = state;
+    const { players, selectedFascistCards, order } = state;
     const eligibleChancellors = players.filter(player => player.president === false && player.eligible === true);
     const president = players.find(player => player.president === true);
     const history = ownProps.history;
     return {
         players,
         order,
+        selectedFascistCards,
+        fascistPickPresident,
         eligibleChancellors,
         president,
         history
@@ -70,9 +71,11 @@ const mapDispatchToProps = function (dispatch, ownProps) {
             player.president === false ? player.president = true : player.president = false;
             dispatch(putPlayer(player));
         },
+
         toggleChancellor(player) {
             player.chancellor === false ? player.chancellor = true : player.chancellor = false;
             dispatch(putPlayer(player));
+            history.push('/vote-stage')
         }
     };
 };
