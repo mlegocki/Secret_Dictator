@@ -10,7 +10,7 @@ class NominationStage extends Component {
         super();
     }
     componentDidMount() {
-        if (this.props.order !== 1 && this.props.fascistPickPresident === false) {
+        if (this.props.order !== 1 && this.props.turns !== this.props.fascistPickPresident) {
             const currentPresidentIndex = this.props.players.findIndex(player => player.president === true);
 
             this.props.togglePresident(this.props.players[currentPresidentIndex]);
@@ -49,9 +49,10 @@ class NominationStage extends Component {
 }
 
 const mapStateToProps = function (state, ownProps) {
-    const { players, selectedFascistCards, order } = state;
+    const { players, selectedFascistCards, selectedAllyCards, fascistPickPresident, order } = state;
     const eligibleChancellors = players.filter(player => player.president === false && player.eligible === true);
     const president = players.find(player => player.president === true);
+    const turns = selectedFascistCards.length + selectedAllyCards.length;
     const history = ownProps.history;
     return {
         players,
@@ -60,6 +61,7 @@ const mapStateToProps = function (state, ownProps) {
         fascistPickPresident,
         eligibleChancellors,
         president,
+        turns,
         history
     };
 };

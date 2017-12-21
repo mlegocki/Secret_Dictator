@@ -55,7 +55,7 @@ function CardDraw(props) {
             </div>
             {/* SPECIAL FASCIST CARD CASES */}
             <div>
-                {fascistSpecialCards(selectedFascistCards, players, president, fascistPickPresident)}
+                {fascistSpecialCards(players, president, selectedAllyCards, selectedFascistCards, fascistPickPresident)}
             </div>
             <button onClick={returnToVote}>
                 Next Vote
@@ -81,8 +81,8 @@ const mapDispatchToProps = function (dispatch, ownProps) {
         returnToVote() {
             history.push('/nomination-stage');
         },
-        fascistSpecialCards(selectedFascistCards, players, president, fascistPickPresident) {
-            if (!fascistPickPresident && selectedFascistCards.length === 3) {
+        fascistSpecialCards(players, president, selectedAllyCards, selectedFascistCards, fascistPickPresident) {
+            if (fascistPickPresident === 0 && selectedFascistCards.length === 3) {
                 return (
                     <div>
                         {
@@ -93,7 +93,7 @@ const mapDispatchToProps = function (dispatch, ownProps) {
                                             <button onClick={() => {
                                                 player.president = true;
                                                 president.president = false;
-                                                dispatch(pickedPresident());
+                                                dispatch(pickedPresident((selectedFascistCards.length + selectedAllyCards.length)));
                                                 history.push('/nomination-stage');
                                             }}>
                                                 {player.name}
