@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { putPlayer, pickedPresident } from '../store';
+import { putPlayer, pickedPresident, addAllySelected, addFascistSelected, deleteCard } from '../store';
 /*
 -----LEGEND-----
 
@@ -26,33 +26,24 @@ function CardDraw(props) {
         selectedAllyCards,
         fascistPickPresident,
         returnToVote,
+        redCard,
+        blackCard,
         fascistSpecialCards
     } = props;
     const president = players.find(player => player.president);
     return (
         <div>
-            <div>
-                {
-                    selectedAllyCards.map(card => {
-                        return (
-                            <li key={card.i}>
-                                {card.i}
-                            </li>
-                        )
-                    })
-                }
-            </div>
-            <div>
-                {
-                    selectedFascistCards.map(card => {
-                        return (
-                            <li key={card.i}>
-                                {card.i}
-                            </li>
-                        )
-                    })
-                }
-            </div>
+            {
+                <div>
+
+                    <button onClick={() => redCard(deck, selectedFascistCards)}>
+                        Fascist Policy
+                    </button>
+                    <button onClick={() => blackCard(deck, selectedAllyCards)}>
+                        Liberal Policy
+                    </button>
+                </div>
+            }
             {/* SPECIAL FASCIST CARD CASES */}
             <div>
                 {fascistSpecialCards(players, president, selectedAllyCards, selectedFascistCards, fascistPickPresident)}
@@ -81,8 +72,23 @@ const mapDispatchToProps = function (dispatch, ownProps) {
         returnToVote() {
             history.push('/nomination-stage');
         },
+        redCard(deck, selectedFascistCards) {
+            dispatch(addFascistSelected(deck.cards[deck.cards.length - 1]));
+            dispatch(deleteCard(deck.cards[deck.cards.length - 1]));
+        },
+        blackCard(deck, selectedAllyCards) {
+            dispatch(addAllySelected(deck.cards[0]));
+            dispatch(deleteCard(deck.cards[0]));
+        },
         fascistSpecialCards(players, president, selectedAllyCards, selectedFascistCards, fascistPickPresident) {
-            if (fascistPickPresident === 0 && selectedFascistCards.length === 3) {
+            if (selectedFascistCards.length === 0 || selectedFascistCards.length === 1) { 
+                history.push('/nomination-stage');
+            }
+            else if (selectedFascistCards.length === 2) {
+                alert(`${president.name} investigates another player's card`)
+                history.push('/nomination-stage');
+            }
+            else if (fascistPickPresident === 0 && selectedFascistCards.length === 3) {
                 return (
                     <div>
                         {
@@ -105,11 +111,45 @@ const mapDispatchToProps = function (dispatch, ownProps) {
                         }
                     </div>
                 );
+            } else if (selectedFascistCards.length === 4) {
+                return (
+                    <div>
+                        {
+                            players.map(player => {
+                                if (!player.president) {
+                                    <li key={player.id}>
+                                        <button onClick={() => {
+                                            dispatch(deletePlayer(player));
+                                            history.push('/nomination-stage');
+                                        }}>
+                                            {player.name}
+                                        </button>
+                                    </li>
+                                }
+                            })
+                        }
+                    </div>
+                )
+            } else if (selectedFascistCards.length === 5) {
+                return (
+                    <div>
+                        {
+                            players.map(player => {
+                                if (!player.president) {
+                                    <li key={player.id}>
+                                        <button onClick={() => {
+                                            dispatch(deletePlayer(player));
+                                            history.push('/nomination-stage');
+                                        }}>
+                                            {player.name}
+                                        </button>
+                                    </li>
+                                }
+                            })
+                        }
+                    </div>
+                )
             }
-            // const currentPresident = players.find(player => player.president);
-            // currentPresident.president = false;
-            // case 4: 
-            // case 5:
         }
     };
 };

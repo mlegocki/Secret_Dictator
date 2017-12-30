@@ -4,7 +4,10 @@ import Deck from 'deck-of-cards';
 // INITIALIZE DECK OF CARDS
 
 const deck = Deck();
-deck.shuffle();
+const liberalBlacks = deck.cards.slice(0, 6);
+const fascistReds = deck.cards.slice(13, 24);
+const policyCards = liberalBlacks.concat(fascistReds);
+deck.cards = policyCards;
 
 const GET_DECK = 'GET_DECK';
 const REMOVE_CARD = 'REMOVE_CARD';

@@ -46,15 +46,7 @@ const mapDispatchToProps = function (dispatch, ownProps) {
             nominatedChancellor.eligible = false;
             dispatch(putPlayer(nominatedChancellor));
             dispatch(nextInOrder());
-
-            const selectedCard = cards[0];
-            if (selectedCard.suit === 0 || selectedCard.suit === 2) {
-                dispatch(addAllySelected(selectedCard));
-                dispatch(deleteCard(selectedCard));
-            } else {
-                dispatch(addFascistSelected(selectedCard));
-                dispatch(deleteCard(selectedCard));
-            }
+            
             history.push('/card-draw');
         },
         failure(nominatedChancellor) {
